@@ -13,10 +13,10 @@ export class Series {
   @Column()
   genero: string;
 
-  @Column()
+  @Column({nullable: true })
   sinopsis: string;
 
-  @Column()
+  @Column({ nullable: true })
   @MinLength(10)
   urlPortada: string; 
 
