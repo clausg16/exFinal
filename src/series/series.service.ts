@@ -9,7 +9,7 @@ import { UpdateSeriesDto } from './dto/update-series.dto';
 export class SeriesService {
   constructor(
     @InjectRepository(Series)
-    private readonly seriesRepository: Repository<Series>, // <-- aquí se inyecta el repositorio
+    private readonly seriesRepository: Repository<Series>, 
   ) {}
 
   create(createSeriesDto: CreateSeriesDto) {
