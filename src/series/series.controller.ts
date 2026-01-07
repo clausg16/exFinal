@@ -1,20 +1,40 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common';
 import { SeriesService } from './series.service';
 import { CreateSeriesDto } from './dto/create-series.dto';
+import { UpdateSeriesDto } from './dto/update-series.dto';
 import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('series')
 export class SeriesController {
-  constructor(private service: SeriesService) {}
+  constructor(private readonly seriesService: SeriesService) {}
 
+  // 🔓 PÚBLICO: GET no requiere token
   @Get()
   findAll() {
-    return this.service.findAll(); // 🔓 Público
+    return this.seriesService.findAll();
   }
 
-  @Post()
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.seriesService.findOne(+id);
+  }
+
+  // 🔒 PRIVADO: POST requiere token
   @UseGuards(AuthGuard)
-  create(@Body() dto: CreateSeriesDto) {
-    return this.service.create(dto); // 🔒 Privado
+  @Post()
+  create(@Body() createSerieDto: CreateSeriesDto) {
+    return this.seriesService.create(createSerieDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateSerieDto: UpdateSeriesDto) {
+    return this.seriesService.update(+id, updateSerieDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.seriesService.remove(+id);
   }
 }

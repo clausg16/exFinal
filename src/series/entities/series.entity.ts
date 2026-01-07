@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Episodio } from '../../episodios/entities/episodio.entity';
+import { MinLength } from 'class-validator';
 
 @Entity('series')
 export class Series {
@@ -9,11 +10,15 @@ export class Series {
   @Column()
   titulo: string;
 
-  @Column({ nullable: true })
-  descripcion: string;
-
   @Column()
   genero: string;
+
+  @Column()
+  sinopsis: string;
+
+  @Column()
+  @MinLength(10)
+  urlPortada: string; 
 
   @OneToMany(() => Episodio, episodio => episodio.serie)
   episodios: Episodio[];
