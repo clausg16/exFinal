@@ -1,27 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Serie } from './entities/series.entity';
+import { Series } from './entities/series.entity';
+import { CreateSeriesDto } from './dto/create-series.dto';
+import { UpdateSeriesDto } from './dto/update-series.dto';
 
 @Injectable()
 export class SeriesService {
   constructor(
-    @InjectRepository(Serie)
-    private repo: Repository<Serie>,
+    @InjectRepository(Series)
+    private readonly seriesRepository: Repository<Series>, // <-- aquí se inyecta el repositorio
   ) {}
 
-  create(dto) {
-    return this.repo.save(dto);
+  create(createSeriesDto: CreateSeriesDto) {
+    const serie = this.seriesRepository.create(createSeriesDto);
+    return this.seriesRepository.save(serie);
   }
 
   findAll() {
-    return this.repo.find({ relations: ['episodios'] });
+    return this.seriesRepository.find({ relations: ['episodios'] });
   }
 
   findOne(id: number) {
-    return this.repo.findOne({
-      where: { id },
-      relations: ['episodios'],
-    });
+    return this.seriesRepository.findOne({ where: { id }, relations: ['episodios'] });
+  }
+
+  update(id: number, updateSeriesDto: UpdateSeriesDto) {
+    return this.seriesRepository.update(id, updateSeriesDto);
+  }
+
+  remove(id: number) {
+    return this.seriesRepository.delete(id);
   }
 }

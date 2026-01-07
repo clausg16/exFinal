@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Serie } from '../../series/entities/series.entity';
+import { Series } from '../../series/entities/series.entity';
 
 @Entity()
 export class Episodio {
@@ -15,8 +15,6 @@ export class Episodio {
   @Column()
   numeroCapitulo: number;
 
-  @ManyToOne(() => Serie, serie => serie.episodios, {
-    onDelete: 'CASCADE',
-  })
-  serie: Serie;
+  @ManyToOne(() => Series, serie => serie.episodios)
+  serie: Series;
 }
